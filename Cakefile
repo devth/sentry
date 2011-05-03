@@ -3,8 +3,11 @@ fs     = require 'fs'
 
 appFiles  = [
   # omit src/ and .coffee to make the below lines a little shorter
+  'app/models/urls'
+  'app/views/frame'
   'app/views/application_view'
   'app/controllers/application_controller'
+  'app/app'
 ]
 
 task 'build', 'Build single application file from source files', ->

@@ -1,7 +1,12 @@
 class ApplicationController extends Backbone.Controller
-  initialize ->
-    @application_view = new ApplicationView()
+  initialize: ->
+    @urls = new Urls()
+    @applicationView = new ApplicationView({el: $("#content"), model: @urls})
+
   routes:
-    "*": "route"
-  route ->
-    alert "route change!"
+    "*urls": "handleRoute"
+  handleRoute: (hash) ->
+    urls = hash.split(",").map (url) -> { url: url }
+    console.log("route", urls)
+    @urls.refresh(urls)
+
