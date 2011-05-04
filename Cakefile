@@ -1,5 +1,8 @@
 fs     = require 'fs'
+util   = require 'util'
 {exec} = require 'child_process'
+
+prodSrcCoffeeDir = "src/"
 
 appFiles  = [
   # omit src/ and .coffee to make the below lines a little shorter
@@ -26,3 +29,12 @@ task 'build', 'Build single application file from source files', ->
         fs.unlink 'js/app.coffee', (err) ->
           throw err if err
           console.log 'Done.'
+
+task 'watch', 'Watch prod source files and build changes', ->
+  util.log "Watching for changes in #{prodSrcCoffeeDir}"
+
+  for file in appFiles then do (file) ->
+    fs.watchFile "#{prodSrcCoffeeDir}/#{file}.coffee", (curr, prev) ->
+      if +curr.mtime isnt +prev.mtime
+        util.log "Saw change in #{prodSrcCoffeeDir}/#{file}.coffee"
+        invoke 'build'
