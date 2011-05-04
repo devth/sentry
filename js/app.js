@@ -49,8 +49,10 @@
     };
     ApplicationView.prototype.urlsRefresh = function() {
       console.log("refresh");
-      this.left.setModel(this.model.at(0));
-      return this.right.setModel(this.model.at(1));
+      if (this.model.size() > 1) {
+        this.left.setModel(this.model.at(0));
+        return this.right.setModel(this.model.at(1));
+      }
     };
     return ApplicationView;
   })();

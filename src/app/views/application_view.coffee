@@ -9,5 +9,6 @@ class ApplicationView extends Backbone.View
 
   urlsRefresh: ->
     console.log("refresh")
-    @left.setModel @model.at(0)
-    @right.setModel @model.at(1)
+    if @model.size() > 1
+      @left.setModel @model.at(0)
+      @right.setModel @model.at(1)
