@@ -14,7 +14,7 @@ class ApplicationView extends Backbone.View
     if @model.size() > 2
       # cycle - starting on the 2nd url
       @currentUrlIndex = 2
-      @cycleInterval = setInterval (=> @showNext()), 10000
+      @cycleInterval = setInterval (=> @showNext()), 8000
 
     # init with the first 2 urls
     if @model.size() > 1

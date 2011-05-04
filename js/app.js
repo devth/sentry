@@ -24,12 +24,16 @@
       return this.template = $("#frame").html();
     };
     Frame.prototype.render = function() {
-      var $html;
-      $html = $(_.template(this.template, this.model.attributes)).css("visibility", "none");
-      this.el.html($html);
-      return setTimeout((function() {
-        return $html.fadeIn();
-      }), 200);
+      var $existingFrames, $html;
+      $html = $(_.template(this.template, this.model.attributes)).hide();
+      $existingFrames = this.$(".iframe_container");
+      this.el.append($html);
+      return setTimeout((__bind(function() {
+        return $html.fadeIn('slow', __bind(function() {
+          $existingFrames.remove();
+          return console.log($existingFrames);
+        }, this));
+      }, this)), 1000);
     };
     Frame.prototype.setModel = function(model) {
       this.model = model;
@@ -59,7 +63,7 @@
         this.currentUrlIndex = 2;
         this.cycleInterval = setInterval((__bind(function() {
           return this.showNext();
-        }, this)), 10000);
+        }, this)), 8000);
       }
       if (this.model.size() > 1) {
         this.right.setModel(this.model.at(1));
@@ -104,7 +108,6 @@
           url: url
         };
       });
-      console.log("route", urls);
       return this.urls.refresh(urls);
     };
     return ApplicationController;
