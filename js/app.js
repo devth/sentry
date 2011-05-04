@@ -7,7 +7,7 @@
     child.prototype = new ctor;
     child.__super__ = parent.prototype;
     return child;
-  };
+  }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Urls = (function() {
     function Urls() {
       Urls.__super__.constructor.apply(this, arguments);
@@ -24,7 +24,12 @@
       return this.template = $("#frame").html();
     };
     Frame.prototype.render = function() {
-      return this.el.html(_.template(this.template, this.model.attributes));
+      var $html;
+      $html = $(_.template(this.template, this.model.attributes)).css("visibility", "none");
+      this.el.html($html);
+      return setTimeout((function() {
+        return $html.fadeIn();
+      }), 200);
     };
     Frame.prototype.setModel = function(model) {
       this.model = model;
@@ -45,13 +50,34 @@
         el: this.$(".right")
       });
       _.bindAll(this, 'urlsRefresh');
-      return this.model.bind('refresh', this.urlsRefresh);
+      this.model.bind('refresh', this.urlsRefresh);
+      return this.isLeft = true;
     };
     ApplicationView.prototype.urlsRefresh = function() {
-      console.log("refresh");
+      console.log("urlsRefresh", this.model.size());
+      if (this.model.size() > 2) {
+        this.currentUrlIndex = 2;
+        this.cycleInterval = setInterval((__bind(function() {
+          return this.showNext();
+        }, this)), 10000);
+      }
       if (this.model.size() > 1) {
-        this.left.setModel(this.model.at(0));
-        return this.right.setModel(this.model.at(1));
+        this.right.setModel(this.model.at(1));
+      }
+      if (this.model.size() > 0) {
+        return this.left.setModel(this.model.at(0));
+      }
+    };
+    ApplicationView.prototype.showNext = function() {
+      var frame;
+      frame = this.isLeft ? this.left : this.right;
+      console.log("show next", this.currentUrlIndex, frame);
+      frame.setModel(this.model.at(this.currentUrlIndex));
+      this.isLeft = !this.isLeft;
+      if (this.currentUrlIndex < this.model.size() - 1) {
+        return this.currentUrlIndex += 1;
+      } else {
+        return this.currentUrlIndex = 0;
       }
     };
     return ApplicationView;
