@@ -9,17 +9,17 @@
     return child;
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Urls = (function() {
+    __extends(Urls, Backbone.Collection);
     function Urls() {
       Urls.__super__.constructor.apply(this, arguments);
     }
-    __extends(Urls, Backbone.Collection);
     return Urls;
   })();
   Frame = (function() {
+    __extends(Frame, Backbone.View);
     function Frame() {
       Frame.__super__.constructor.apply(this, arguments);
     }
-    __extends(Frame, Backbone.View);
     Frame.prototype.initialize = function() {
       return this.template = $("#frame").html();
     };
@@ -42,10 +42,10 @@
     return Frame;
   })();
   ApplicationView = (function() {
+    __extends(ApplicationView, Backbone.View);
     function ApplicationView() {
       ApplicationView.__super__.constructor.apply(this, arguments);
     }
-    __extends(ApplicationView, Backbone.View);
     ApplicationView.prototype.initialize = function() {
       this.left = new Frame({
         el: this.$(".left")
@@ -63,7 +63,7 @@
         this.currentUrlIndex = 2;
         this.cycleInterval = setInterval((__bind(function() {
           return this.showNext();
-        }, this)), 8000);
+        }, this)), 16000);
       }
       if (this.model.size() > 1) {
         this.right.setModel(this.model.at(1));
@@ -87,10 +87,10 @@
     return ApplicationView;
   })();
   ApplicationController = (function() {
+    __extends(ApplicationController, Backbone.Controller);
     function ApplicationController() {
       ApplicationController.__super__.constructor.apply(this, arguments);
     }
-    __extends(ApplicationController, Backbone.Controller);
     ApplicationController.prototype.initialize = function() {
       this.urls = new Urls();
       return this.applicationView = new ApplicationView({
